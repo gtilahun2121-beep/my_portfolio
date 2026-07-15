@@ -1,0 +1,13 @@
+📄 RESUME INSTRUCTIONS
+======================
+
+To enable the "Download Resume" button on your portfolio:
+
+1. Create or export your resume as a PDF file
+2. Rename it to: resume.pdf
+3. Place it in this folder: frontend/public/
+4. The download button will automatically work!
+
+Your resume will be downloaded as: "Getanew_Tilahun_Resume.pdf"
+
+Note: Make sure the file is named exactly "resume.pdf" (lowercase)

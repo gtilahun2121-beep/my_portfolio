@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Project {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
+  shortDesc    String?
+  image        String
+  screenshots  String[]
+  github       String?
+  liveDemo     String?
+  technologies String[]
+  category     String?
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+  problem      String?
+  solution     String?
+  architecture String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Blog {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String    @unique
+  content     String
+  excerpt     String?
+  coverImage  String?
+  category    String
+  tags        String[]
+  published   Boolean   @default(false)
+  views       Int       @default(0)
+  readTime    Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  blogId    String   @db.ObjectId
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  content   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Skill {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  skillName  String
+  level      Int
+  category   String
+  icon       String?
+  order      Int    @default(0)
+}
+
+model Certificate {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  issuer    String
+  image     String
+  category  String?
+  issueDate DateTime?
+  url       String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  replied   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Experience {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  company     String
+  position    String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  location    String?
+  technologies String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
+
+model Education {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  institution String
+  degree      String
+  field       String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String?
+  grade       String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
+
+model Achievement {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  date        DateTime
+  category    String?
+  icon        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Visitor {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ip        String?
+  country   String?
+  city      String?
+  device    String?
+  browser   String?
+  os        String?
+  page      String
+  createdAt DateTime @default(now())
+}
+
+model Analytics {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  date           DateTime @unique @default(now())
+  totalVisitors  Int      @default(0)
+  totalViews     Int      @default(0)
+  uniqueVisitors Int      @default(0)
+}
+
+model Testimonial {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  position  String
+  company   String?
+  content   String
+  image     String?
+  rating    Int      @default(5)
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
