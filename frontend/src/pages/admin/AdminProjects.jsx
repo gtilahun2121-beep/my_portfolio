@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaProjectDiagram, FaPlus, FaEdit, FaTrash, FaUpload, FaEye, FaStar, FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
-import axios from 'axios'
+import api from '../../services/api'
 
 function AdminProjects() {
   const navigate = useNavigate()
@@ -38,7 +38,7 @@ function AdminProjects() {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/projects')
+      const response = await api.get('/projects')
       setProjects(response.data)
     } catch (error) {
       console.error('Error fetching projects:', error)
@@ -61,14 +61,14 @@ function AdminProjects() {
       }
 
       if (editingId) {
-        await axios.put(
-          `http://localhost:5000/api/projects/${editingId}`,
-          projectData,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      } else {
-        await axios.post(
-          'http://localhost:5000/api/projects',
+await api.put(
+        `/projects/${editingId}`,
+        projectData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    } else {
+      await api.post(
+        '/projects',
           projectData,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -101,8 +101,8 @@ function AdminProjects() {
 
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(
-        `http://localhost:5000/api/projects/${id}`,
+      await api.delete(
+        `/projects/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       fetchProjects()
@@ -141,8 +141,8 @@ function AdminProjects() {
       formDataUpload.append('image', file)
 
       const token = localStorage.getItem('token')
-      const response = await axios.post(
-        'http://localhost:5000/api/upload',
+      const response = await api.post(
+        '/upload',
         formDataUpload,
         {
           headers: {

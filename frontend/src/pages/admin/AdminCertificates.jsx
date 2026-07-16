@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaCertificate, FaPlus, FaEdit, FaTrash, FaUpload, FaEye, FaStar } from 'react-icons/fa'
-import axios from 'axios'
+import api from '../../services/api'
 
 function AdminCertificates() {
   const navigate = useNavigate()
@@ -37,7 +37,7 @@ function AdminCertificates() {
 
   const fetchCertificates = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/certificates')
+      const response = await api.get('/certificates')
       setCertificates(response.data)
     } catch (error) {
       console.error('Error fetching certificates:', error)
@@ -58,14 +58,14 @@ function AdminCertificates() {
       }
 
       if (editingId) {
-        await axios.put(
-          `http://localhost:5000/api/certificates/${editingId}`,
-          certificateData,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      } else {
-        await axios.post(
-          'http://localhost:5000/api/certificates',
+await api.put(
+        `/certificates/${editingId}`,
+        certificateData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    } else {
+      await api.post(
+        '/certificates',
           certificateData,
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -97,8 +97,8 @@ function AdminCertificates() {
 
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(
-        `http://localhost:5000/api/certificates/${id}`,
+      await api.delete(
+        `/certificates/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       fetchCertificates()
@@ -145,8 +145,8 @@ function AdminCertificates() {
       formDataUpload.append(isImage ? 'image' : 'file', file)
 
       const token = localStorage.getItem('token')
-      const response = await axios.post(
-        'http://localhost:5000/api/upload',
+      const response = await api.post(
+        '/upload',
         formDataUpload,
         {
           headers: {

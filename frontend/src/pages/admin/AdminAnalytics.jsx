@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaUsers, FaEnvelope, FaProjectDiagram, FaBlog, FaChartLine, FaEye, FaTrash, FaCheckCircle } from 'react-icons/fa'
-import axios from 'axios'
+import api from '../../services/api'
 
 function AdminAnalytics() {
   const navigate = useNavigate()
@@ -23,8 +23,8 @@ function AdminAnalytics() {
       const token = localStorage.getItem('token')
       console.log('Fetching analytics with token:', token ? 'Token exists' : 'No token')
       
-      const response = await axios.get(
-        `http://localhost:5000/api/analytics?days=${timeRange}`,
+      const response = await api.get(
+        `/analytics?days=${timeRange}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -48,8 +48,8 @@ function AdminAnalytics() {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('token')
-      await axios.put(
-        `http://localhost:5000/api/analytics/messages/${id}/read`,
+      await api.put(
+        `/analytics/messages/${id}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -63,8 +63,8 @@ function AdminAnalytics() {
     if (!window.confirm('Delete this message?')) return
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(
-        `http://localhost:5000/api/analytics/messages/${id}`,
+      await api.delete(
+        `/analytics/messages/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       fetchAnalytics()

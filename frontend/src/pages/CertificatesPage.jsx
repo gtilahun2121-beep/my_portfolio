@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaCertificate, FaExternalLinkAlt, FaStar, FaCalendar, FaUser } from 'react-icons/fa'
-import axios from 'axios'
+import api from '../services/api'
 import './CertificatesPage.css'
 
 function CertificatesPage() {
@@ -15,7 +15,7 @@ function CertificatesPage() {
 
   const fetchCertificates = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/certificates')
+      const response = await api.get('/certificates')
       setCertificates(response.data)
     } catch (error) {
       console.error('Error fetching certificates:', error)
